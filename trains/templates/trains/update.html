@@ -1,0 +1,25 @@
+{% extends "base_tr.html" %}
+{% block title %} Редактирование маршрута {% endblock title %}
+
+{% block content %}
+    <h2 class="display-4">Редактировать маршрут поезда</h2>
+        <div class="row mx-auto">
+            <div class="col-md">
+                <form action="" method="post">{% csrf_token %}
+                    {{form.as_p}}
+                    <br>
+                    <input type="submit" value="Сохранить">
+
+                </form>
+                <a href='{% url "trains:home"%}'>
+                            <button type='button' class='btn btn btn-light btn-sm '>
+                                <span><h6>Вернуться</h6></span>
+                            </button>
+                </a>
+            </div>
+        </div>
+
+
+
+{% endblock content %}
+

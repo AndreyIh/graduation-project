@@ -1,0 +1,24 @@
+
+{% extends "base_tr.html" %}
+    {% block title %} Маршрут {% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md">
+            <h3>Поезд </h3> <p>{{object}}</p>
+            <p> Время в пути {{object.travel_time}} часов</p>
+        </div>
+    </div>
+
+
+    <div class="row">
+            <div class='col-md-6'>
+                <a href='{% url "trains:home"%}'>
+                    <button type='button' class='btn-light '>
+                        <span>Назад к списку</span>
+                    </button>
+                </a>
+            </div>
+        </div>
+{% endblock content %}
+

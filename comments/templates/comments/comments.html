@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %} Оставить комментарии {% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md">
+            <p class="h5"> Вы хотите прокоментировать пост "{{object.title}}"</p>
+                {% if comment %}
+                    <p> В ответ на комментарий пользователя {{comment.author}}:</p>
+                    <p class="lead"> <small><em>    &nbsp;&nbsp;&nbsp;"{{comment.comment_text}}"</em></small></p>
+                {% endif %}
+            <br><br>
+                <form action="" method="post">{% csrf_token %}
+                        {{form.as_p}}
+                    <input type="submit" class="btn btn-sm btn-outline-success" value="Сохранить">
+                </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md">
+            <a href="{% url 'comments:comment' year=object.create_time.year month=object.create_time.month day=object.create_time.day slug=object.slug %}" class="btn btn-sm btn-outline-success">&nbsp;&nbsp;&nbsp;&nbsp;Назад&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+    </div>
+{% endblock content %}

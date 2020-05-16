@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %} Блог {% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md">
+            <p class="h1 text-center">{{object.title}}</p>
+            <br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md">
+                {{object.content|safe}}
+            <p class="small font-italic align-middle "> Автор {{object.author}}. Дата создания {{object.create_time}}</p>
+            {% if object.updated %} <p class="small font-italic align-middle "> Последнее обновление {{object.updated}} </p> {% endif%}
+        </div>
+    </div>
+    <div class="row">
+        <div class='col'>
+            <a href='{% url "home"%}'>
+                <button type='button' class='btn btn-dark'>
+                   <span>Назад к списку</span>
+                </button>
+            </a>
+            {% if user.is_authenticated %}
+                {% if object.author == user %}
+            <a href='{% url "blog:update" slug=object.slug pk=object.pk %}'>
+               <button type='button' class='btn btn-dark'>
+                   <span>Редактировать</span>
+               </button>
+            </a>
+            <a href='{% url "blog:delete" slug=object.slug pk=object.pk %}'>
+                <button type='button' class='btn btn-dark'>
+                    <span>Удалить</span>
+                </button>
+            </a>
+                {% endif %}
+            {% endif %}
+             <a href="{% url 'comments:answer' pk_b=object.pk pk_c=0 %}" ><button type='button' class='btn btn-dark'>
+                    <span>Оставить комментарий</span>
+                </button>
+             </a>
+             <a href="{% url 'blog:post_share' pk=object.pk %}"><button type='button' class='btn btn-dark'>
+                 <span>Поделиться</span>
+             </button>
+             </a>
+
+         </div>
+    </div>
+        <br>
+        <p class="h6">Комментарии</p>
+
+{% for comment in comments %}
+    <div class="row ">
+        <div class="col-md-6 ">
+            <div class="card w-{{comment.lvl}} p-0 float-right" >
+                <div class="card-body" >
+                    <blockquote class="blockquote mb-0 ">
+                      <p class="small">{{comment.comment_text}}</p>
+                        <footer class="blockquote-footer text-right"><small class="text-muted">{{comment.author}}<cite title="Source Title"> -{{comment.create_time}}
+                        <a href="{% url 'comments:answer' pk_b=object.pk pk_c=comment.pk %}" class="btn btn-sm btn-outline-success">ответить</a>
+                        </cite></small></footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+{%endfor%}
+{% endblock content %}

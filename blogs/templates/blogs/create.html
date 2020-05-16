@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %} Создать пост {% endblock title %}
+
+{% block content %}
+    <div class="row">
+            <div class="col-md-9">
+                <h2 class="display-4 text-center">Добавить новую запись</h2>
+                <form action="" method="post">{% csrf_token %}
+                    {% load static %}
+                    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+                    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+                    {{form.as_p}}
+                    <input type="submit" value="Сохранить">
+                </form>
+            </div>
+    </div>
+{% endblock content %}
+

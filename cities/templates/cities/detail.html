@@ -1,0 +1,30 @@
+
+
+{% extends "base_tr.html" %}
+    {% block title %} Город {% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md">
+            <h3>Название города</h3>
+                <p>{{object.name}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md">
+            <p>{{object.genitive_name}}</p>
+        </div>
+    </div>
+    <div class="row">
+            <div class='col-md-6'>
+                <a href='{% url "cities:home"%}'>
+                    <button type='button' class='btn btn-dark'>
+                        <span>Назад к списку</span>
+                    </button>
+                </a>
+            </div>
+        </div>
+
+
+{% endblock content %}
+

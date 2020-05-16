@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+{% url 'cities:home' as cities_home_url %}
+{% url 'cities:add' as cities_add_url %}
+{% url 'trains:home' as trains_home_url %}
+{% url 'trains:add' as trains_add_url %}
+{% url 'list' as list_url %}
+{% url 'home' as home_url %}
+
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+      {% load static %}
+      <link rel="shortcut icon" href='{% static "favicon.ico" %}' type="image/png">
+    <title>{% block title %} {% endblock title %} </title>
+
+      <!-- меню выпадает при наведении-->
+      <style>
+
+            nav.navbar .dropdown:hover > .dropdown-menu {
+             display: block;
+            }
+            nav.navbar .dropright:hover > .dropdown-menu {
+             display: block;
+            }
+        </style>
+
+    <div class="pos-f-t">
+
+
+            <div class="container-fluid bg-primary">
+
+                <div class="col-md-11 col-sm-9">
+
+                    <nav class="navbar navbar-expand-lg navbar-light ">
+                        <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarText_1"
+                                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse bg-primary" id="navbarText_1">
+                            <ul class="navbar-nav m-auto">
+                                <li class="nav-item {% if request.path == home_url %}active{% endif %}">
+                                    <a class="nav-link" href="{% url 'home' %}">На главную <span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="nav-item {% if request.path == home_url %}active{% endif %}">
+                                    <a class="nav-link" href="{% url 'travel' %}">Путешествия <span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="nav-item {% if request.path == cities_home_url %}active{% endif %}">
+                                    <a class="nav-link" href="{% url 'cities:home' %} ">Города</a>
+                                </li>
+                                <li class="nav-item {% if request.path == trains_home_url %}active{% endif %}">
+                                    <a class="nav-link" href="{% url 'trains:home' %} ">Поезда</a>
+                                </li>
+                                <li class="nav-item {% if request.path == list_url %}active{% endif %}">
+                                    <a class="nav-link" href="{% url 'list' %}">Сохраненные маршруты</a>
+                                </li>
+                                <li class="nav-item dropright ">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                       role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Добавить</a>
+
+                                    <div class="dropdown-menu bg-light " aria-labelledby="navbarDropdownMenuLink">
+
+                                        <ul class="list-unstyled ">
+                                            <li class="nav-item dropright ">
+
+                                                <a class="dropdown-item" href="{% url 'cities:add' %}">Новый город</a>
+                                                <a class="dropdown-item" href="{% url 'trains:add' %}">Новый поезд</a>
+
+
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                </li>
+
+                                    {% if user.is_authenticated %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'accounts:logout' %} ">Выйти</a>
+                                    </li>
+                                    {% else %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'accounts:login' %} ">Войти</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'accounts:register' %} ">Зарегистрироваться</a>
+                                    </li>
+                                    {% endif %}
+
+
+                            </ul>
+
+                        </div>
+
+                    </nav>
+                </div>
+            </div>
+            </div>
+
+
+                </div>
+
+
+  </head>
+
+
+  <body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                {% if messages %}
+                        {% for message in messages %}
+                            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <span{% if message.tags %} class="{{ message.tags }}"{% endif %}>Внимание! {{ message }}</span>
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                            </div>
+                        {% else %}
+                            <div id="my-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+                                <span{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</span>
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container-fluid">
+        <div class="row ">
+            <div class="col-md-2"><!--сделаем слева меню или навигацию-->
+
+            </div>
+            <div class="col-md-8 align-self-center"> <!--справа таблицы-->
+            {% block content %} {% endblock content %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+
+
+
+    <script>
+        $(document).ready(function() {
+        $('.js-example-basic-single').select2({
+        placeholder: 'Выберите город',
+        language: 'ru'
+        });
+        $('.js-example-basic-multiple').select2({
+        placeholder: 'Выберите промежуточные города',
+        maximumSelectionLength: 5
+        });
+        });
+
+        $(function(){
+            window.setTimeout(function(){
+                $('#my-alert').alert('close');
+            },5000);
+        });
+        $('.table tbody tr').each(function(i) {
+        var number = i + 1;
+        $(this).find('td:first').text(number+".");
+        });
+    </script>
+
+  </body>
+</html>

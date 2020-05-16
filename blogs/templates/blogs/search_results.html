@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %} Поиск {% endblock title %}
+
+{% block content %}
+    <div class="row">
+            <div class="col-md-9">
+                <h2 class="display-4 text-center">Результаты поиска</h2>
+                    <ul>
+                      {% for blog in object_list %}
+                        <li>
+                            <a href="{% url 'comments:comment' pk=blog.pk %}"><p>{{ blog.title }},</p> </a>
+                            <p>автор {{ blog.author }}. Создано {{blog.create_time}}</p>
+                        </li>
+                      {% endfor %}
+                    </ul>
+            </div>
+    </div>
+{% endblock content %}
