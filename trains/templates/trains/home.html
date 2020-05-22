@@ -7,20 +7,7 @@
 
     <div class="row text-center">
         <div class="col-md-8 mx-auto">
-            <!--<div class="row">
-                <table class="table table-striped">
-                    <tbody>
-                {% for key, value in meta_dict %}
-                <tr>
-                    <td></td>
-                    <td>{{key}}</td>
-                    <td>{{value}}</td>
-                </tr>
-                {% endfor %}
 
-                </tbody>
-                </table>
-            </div>-->
     <table class="table table-striped table-hover table-bordered table-sm">
         <thead class="thead-dark">
             <tr>
@@ -130,7 +117,12 @@
         </div>
 
 
-
+<script>
+    $('.table tbody tr').each(function(i) {
+        var number = i + 1;
+        $(this).find('td:first').text(number+".");
+        });
+</script>
 
 
 

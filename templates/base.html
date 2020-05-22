@@ -14,6 +14,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 
+
       {% load static %}
       <link rel="shortcut icon" href="{% static "favicon.ico" %}" type="image/png">
 
@@ -28,6 +29,19 @@
              display: block;
             }
 
+        </style>
+      <style type="text/css">
+            table {
+            width: 100%; /* Ширина таблицы в процентах */
+           }
+           .col1 {
+            width: 5px; /* Ширина ячейки */
+            border-left: 1px solid black; /* Линия слева от ячейки */
+           }
+           .line {
+            border-left: 2px solid #ccc; /* Параметры линии */
+            margin-left: 20px; /* Отступ слева */
+            padding-left: 10px; /* Расстояние от линии до текста */
         </style>
 
 
@@ -73,7 +87,7 @@
                                 </li>
                                         {% if user.is_authenticated %}
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{% url 'author' author='Andrey' %}">Ваши посты <span class="sr-only">(current)</span></a>
+                                        <a class="nav-link" href="{% url 'author' author=user.username %}">Ваши посты <span class="sr-only">(current)</span></a>
                                     </li>
 
                                     <li class="nav-item {% if request.path == add_url %}active{% endif %}">
@@ -163,9 +177,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
-
-
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
 
     <script>
@@ -185,11 +197,10 @@
                 $('#my-alert').alert('close');
             },5000);
         });
-        $('.table tbody tr').each(function(i) {
-        var number = i + 1;
-        $(this).find('td:first').text(number+".");
-        });
+
     </script>
+    {% block javascript %} {% endblock javascript %}
 
   </body>
 </html>
+

@@ -19,7 +19,7 @@ from routes.views import (travel, find_routes, add_route,
                           RouteListView, RouteDetailView, RouteDeleteView)
 
 from blogs.views import home
-from .views import resume
+from .views import resume, add_ajax
 
 urlpatterns = [
     path('accounts/', include(('accounts.urls', 'accounts'))),
@@ -36,6 +36,7 @@ urlpatterns = [
     path('list/', RouteListView.as_view(), name='list'),
     path('detail/<int:pk>/', RouteDetailView.as_view(), name='detail'),
     path('delete/<int:pk>/', RouteDeleteView.as_view(), name='delete'),
+    path('dialogs/', include(('private_chat.urls', 'dialogs'))),
     path('', home, name='home'),
-
+    path('ajax/', add_ajax),
 ]
