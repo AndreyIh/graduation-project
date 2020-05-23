@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .models import Private_Message
 from .forms import MessageForm
+from django.http import Http404, JsonResponse
 
 
 @login_required(login_url='/accounts/login/')
@@ -51,3 +52,20 @@ def chat(request, user_1, user_2):
                                                           'private_messages': messages, 'form': form, 'len_mes': len_mes})
     else:
         return redirect('/dialogs/')
+
+
+def add_ajax(request):
+    old_len = int(request.GET.get('len_mes'))
+    user_1 = int(request.GET.get('user_1'))
+    user_2 = int(request.GET.get('user_2'))
+    new_len = len(Private_Message.objects.filter(interlocutors__id__exact=user_1).filter(
+        interlocutors__id__exact=user_2))
+    if request.is_ajax():
+        if new_len - old_len > 0:
+            response = {'private_messages': 'У вас есть новые сообщения. Показать', 'len_mes': (new_len - old_len)}
+            return JsonResponse(response)
+        else:
+            response = {'private_messages': 'Новых сообщений нет', 'len_mes': (new_len - old_len)}
+            return JsonResponse(response)
+    else:
+        raise Http404
