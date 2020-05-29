@@ -1,5 +1,5 @@
 from datetime import datetime
-import locale
+# import locale
 from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -11,7 +11,7 @@ import redis
 from django.conf import settings
 
 
-locale.setlocale(locale.LC_ALL, "ru_ru.UTF-8")
+#locale.setlocale(locale.LC_ALL, "ru_ru.UTF-8")
 r = redis.StrictRedis(host=settings.REDIS_HOST,
                       port=settings.REDIS_PORT,
                       db=settings.REDIS_DB)
