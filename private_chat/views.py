@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 # import locale
 from django.contrib.auth import get_user
@@ -10,12 +11,12 @@ from django.http import Http404, JsonResponse
 import redis
 from django.conf import settings
 
-
+# For local
 #locale.setlocale(locale.LC_ALL, "ru_ru.UTF-8")
-r = redis.StrictRedis(host=settings.REDIS_HOST,
-                      port=settings.REDIS_PORT,
-                      db=settings.REDIS_DB)
-
+#r = redis.StrictRedis(host=settings.REDIS_HOST,
+#                      port=settings.REDIS_PORT,
+#                      db=settings.REDIS_DB)
+r = redis.from_url(os.environ.get("REDIS_URL"))
 
 @login_required(login_url='/accounts/login/')
 def dialogs(request):
