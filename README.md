@@ -48,6 +48,7 @@
 
 Установка:
 	После копирования приложения, указать `private_chat`  в вашем INSTALLED_APPS в settings.py
+	Установить и запустить сервер Redis ([Официальная документация](https://redis.io/))
 	
 ```python
 INSTALLED_APPS = [

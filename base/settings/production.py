@@ -25,7 +25,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = 's2+_i8)1162sn^#gc0n^oz0b**&+&o^^%lumvdv4(z-10^d79r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -85,7 +84,6 @@ WSGI_APPLICATION = 'base.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
 
 
 DATABASES = {
@@ -216,3 +214,7 @@ EMAIL_HOST_PASSWORD = EM_PASSWORD
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
+
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 0

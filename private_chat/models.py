@@ -8,7 +8,6 @@ class Private_Message(models.Model):
     create_time = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     new_message = models.BooleanField(default=True)
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='author', default='1')
-    #opponent = models.ForeignKey(User, on_delete=models.DO_NOTHING)
 
     class Meta:
         verbose_name = 'Сообщение'
