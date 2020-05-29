@@ -11,7 +11,7 @@ import redis
 from django.conf import settings
 
 
-locale.setlocale(locale.LC_ALL, "ru_ru")
+locale.setlocale(locale.LC_ALL, "ru_ru.UTF-8")
 r = redis.StrictRedis(host=settings.REDIS_HOST,
                       port=settings.REDIS_PORT,
                       db=settings.REDIS_DB)
@@ -89,16 +89,5 @@ def add_ajax(request):
         else:
             return JsonResponse({'private_messages': 'Новых сообщений нет',
                                  'new_messages': 0, 'total_messages': total_messages})
-    else:
-        raise Http404
-
-
-def add_ajax1(request):
-    print('ajax1')
-    for i in request.session.keys():
-        print(i, request.session[i])
-
-    if request.is_ajax():
-        return JsonResponse({'ok': 'ok'})
     else:
         raise Http404
