@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+    {% block title %} Chat Room {% endblock title %}
+
+{% block content %}
+<div class="row">
+{% for message in private_messages %}
+    {% if message.author == user %}
+     <div class="col-sm-1">       </div>
+    <div class="col-sm-11">
+        <div class="card py-0" >
+            <div class="card-body py-0">
+                <div class="row">
+                    <dd class="col-sm my-0 text-right ">{{message.messages|safe}} </dd>
+                    <dt class="col-sm-3 my-0 px-0 line text-center">Вы ({{message.author}}) <span class="badge badge-light">{{message.create_time}}</span></dt>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+   <div class="col-sm-11">
+        <div class="card py-0" style='background-color: #F5FFFA;'>
+            <div class="card-body py-0">
+                <div class="row">
+                    <dt class="col-sm-3 my-0 px-0 text-center">{{message.author}} <span class="badge" style='background-color: #F5FFFA;'>{{message.create_time}}</span></dt>
+                    <dd class="col-sm my-0 line">{{message.messages|safe}}</dd>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-1">       </div>
+    {% endif %}
+{% endfor %}
+
+</div>
+
+<div class="row" id="opponent_card" style="display: none">
+   <div class="col-sm-11">
+        <div class="card py-0 chat_card" style='background-color: #F5FFFA;' >  <!-- chat_card-->
+            <div class="card-body py-0" >
+                <div class="row">
+                    <dt class="col-sm-3 my-0 px-0 text-center"> </dt>
+                    <dd class="col-sm my-0 line"></dd>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-1">       </div>
+</div>
+
+<div class="row"  id="chat_card" style="display: none">
+   <div class="col-sm-1">       </div>
+    <div class="col-sm-11">
+        <div class="card py-0" >
+            <div class="card-body py-0">
+                <div class="row">
+                    <dd class="col-sm my-0 text-right "></dd>
+                    <dt class="col-sm-3 my-0 px-0 line text-center"></dt>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-6">
+
+
+    <textarea id="chat-message-input" class="form-control" rows="3"></textarea>
+    <input id="chat-message-submit" class="btn btn-primary btn-sm" type="button" value="Send">
+
+    <input type="hidden" name="author" id="author" value='{{user.id}}'>
+    <input type="hidden" name="opponent" id="opponent" value='{{opponent}}'>
+
+    </div>
+</div>
+    {{ room_name|json_script:"room-name" }}
+    <script>
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        const author_id = document.querySelector('#author').value;
+
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/dialogs/'
+            + roomName
+            + '/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            if (data.author_id == author_id){
+            let div2 = chat_card.cloneNode(true); // клонировать сообщение
+            div2.style.display = "";
+            div2.querySelector('dd').innerHTML = data.message;
+            div2.querySelector('dt').innerHTML = ("Вы (" + data.author + ")<span class='badge' style='background-color: #F5FFFA;;'>"+data.create_time +"</span>");
+            chat_card.before(div2);
+            document.getElementById('chat_card').id = '';
+            } else {
+            let div2 = opponent_card.cloneNode(true); // клонировать сообщение
+            div2.style.display = "";
+            div2.querySelector('dd').innerHTML = data.message;
+            div2.querySelector('dt').innerHTML = (data.author + "<span class='badge' style='background-color: #F5FFFA;;'>"+data.create_time +"</span>");
+            chat_card.before(div2);
+            document.getElementById('opponent_card').id = ''
+            }
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+
+            const opponent = document.querySelector('#opponent').value;
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'author_id': author_id,
+                'opponent': opponent
+            }));
+            messageInputDom.value = '';
+        };
+
+
+
+    </script>
+
+{% endblock content %}

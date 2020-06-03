@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-# import locale
+import locale
 from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -12,10 +12,10 @@ import redis
 from django.conf import settings
 
 # For local
-#locale.setlocale(locale.LC_ALL, "ru_ru.UTF-8")
-#r = redis.StrictRedis(host=settings.REDIS_HOST,
-#                      port=settings.REDIS_PORT,
-#                      db=settings.REDIS_DB)
+# locale.setlocale(locale.LC_ALL, "ru_ru.UTF-8")
+# r = redis.StrictRedis(host=settings.REDIS_HOST,
+#                       port=settings.REDIS_PORT,
+#                       db=settings.REDIS_DB)
 
 # for heroku
 r = redis.from_url(os.environ.get("REDIS_URL"))
@@ -23,7 +23,7 @@ r = redis.from_url(os.environ.get("REDIS_URL"))
 @login_required(login_url='/accounts/login/')
 def dialogs(request):
     users = User.objects.exclude(id=get_user(request).id)
-    return render(request, 'private_chat/dialogs.html', {'users': users})
+    return render(request, 'private_chat/index.html', {'users': users})
 
 
 @login_required(login_url='/accounts/login/')
@@ -80,7 +80,6 @@ def add_ajax(request):
             user_2 = int(request.GET.get('user_1'))
             new_mes = Private_Message.objects.filter(interlocutors__id__exact=user_1).filter(
                 interlocutors__id__exact=user_2).order_by('-create_time').first()
-            print(new_mes.messages)
             message_create_time = datetime.strftime(new_mes.create_time, '%d %B %Y г. %H:%M')
             response = {'private_messages': 'У вас есть новые сообщения. Показать',
                         'new_messages': new_messages,
@@ -94,3 +93,16 @@ def add_ajax(request):
                                  'new_messages': 0, 'total_messages': total_messages})
     else:
         raise Http404
+
+
+@login_required(login_url='/accounts/login/')
+def room(request, room_name):
+    users = room_name.split('-')
+    messages = Private_Message.objects.filter(interlocutors__id__exact=users[0]).filter(
+        interlocutors__id__exact=users[1])
+    form = MessageForm()
+    opponent = users[1] if int(users[0]) == get_user(request).id else users[0]
+    return render(request, 'private_chat/room.html', {
+        'room_name': room_name, 'private_messages': messages, 'form': form,
+        'opponent': opponent
+    })

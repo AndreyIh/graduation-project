@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+    {% block title %} Чат {% endblock title %}
+
+{% block content %}
+
+
+
+<form action="">
+    <select class="js-example-basic-single" name="user" id="room-name-input" >
+        {% for us in users %}
+            <option value="{% if us.id < user.id %}{{us.id}}-{{user.id}}{% else %}{{user.id}}-{{us.id}}{% endif %}">
+        {{us.username}}</option>
+        {% endfor %}
+    </select>
+    <input id="room-name-submit" type="button" value="Enter">
+</form>
+
+
+
+    <script>
+        document.querySelector('#room-name-input').focus();
+        document.querySelector('#room-name-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#room-name-submit').click();
+            }
+        };
+        document.querySelector('#room-name-submit').onclick = function(e) {
+            var roomName = document.querySelector('#room-name-input').value;
+            window.location.pathname = '/dialogs/' + roomName + '/';
+        };
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
+    </script>
+
+{% endblock content %}
