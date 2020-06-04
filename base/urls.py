@@ -19,7 +19,6 @@ from routes.views import (travel, find_routes, add_route,
                           RouteListView, RouteDetailView, RouteDeleteView)
 
 from blogs.views import home
-from private_chat.views import add_ajax
 from .views import resume
 
 urlpatterns = [
@@ -39,5 +38,4 @@ urlpatterns = [
     path('delete/<int:pk>/', RouteDeleteView.as_view(), name='delete'),
     path('dialogs/', include(('private_chat.urls', 'dialogs'))),
     path('', home, name='home'),
-    path('ajax/', add_ajax),
 ]

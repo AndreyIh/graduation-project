@@ -3,19 +3,18 @@
     {% block title %} Чат {% endblock title %}
 
 {% block content %}
-
-
-
+<h4>Выбирете пользователя:</h4>
 <form action="">
     <select class="js-example-basic-single" name="user" id="room-name-input" >
+        <option value="" disabled="disabled" selected="selected">----------------------</option>
         {% for us in users %}
             <option value="{% if us.id < user.id %}{{us.id}}-{{user.id}}{% else %}{{user.id}}-{{us.id}}{% endif %}">
-        {{us.username}}</option>
+                {{us.username}}
+            </option>
         {% endfor %}
     </select>
-    <input id="room-name-submit" type="button" value="Enter">
+    <input id="room-name-submit" type="button" value="Перейти к чату">
 </form>
-
 
 
     <script>

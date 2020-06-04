@@ -33,7 +33,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         author = int(text_data_json['author_id'])
         opponent = int(text_data_json['opponent'])
 
-        # save message in database, then return
+        # save message in database, then return object
         private_message = await self.save_message(message, author, opponent)
         message_create_time = datetime.strftime(private_message.create_time, '%d %B %Y г. %H:%M')
 
