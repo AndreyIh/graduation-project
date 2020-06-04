@@ -49,13 +49,37 @@
 Установка:
 	После копирования приложения, указать `private_chat`  в вашем INSTALLED_APPS в settings.py
 	Установить и запустить сервер Redis ([Официальная документация](https://redis.io/))
+	Установите Channels и channels-redis в вашем виртуальном окружении, например:
+
+```bash
+pip install channels
+pip install channels-redis
+```
+	
 	
 ```python
 INSTALLED_APPS = [
     ...
     'private_chat',
+    'channels',
 ]
-```	
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [(os.environ.get('REDIS_URL'), 6379)],
+        },
+        "ROUTING": "chat.routing.channel_routing",
+    },
+}
+```
+
+Настройка маршрутизатора для потребителя находиться в 
+
+```bash
+base/routing.py
+```
 
 Подключить в основном urls.py
 
@@ -63,6 +87,5 @@ INSTALLED_APPS = [
 urlpatterns = [
     ...
     path('dialogs/', include(('private_chat.urls', 'dialogs'))),
-    path('ajax/', add_ajax),
 ]
-```	
+```
