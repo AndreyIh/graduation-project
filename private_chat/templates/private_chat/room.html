@@ -65,17 +65,19 @@
 
 <div class="row">
     <div class="col-sm-6">
-
-
-    <textarea id="chat-message-input" class="form-control" rows="3"></textarea>
-    <input id="chat-message-submit" class="btn btn-primary btn-sm" type="button" value="Send">
-
-    <input type="hidden" name="author" id="author" value='{{user.id}}'>
-    <input type="hidden" name="opponent" id="opponent" value='{{opponent}}'>
-
+        <textarea id="chat-message-input" class="form-control" rows="3" placeholder="Написать сообщение..."></textarea>
     </div>
+    <div class="col-sm-3">
+        <input id="chat-message-submit" class="btn btn-primary btn-sm" type="button" value="Отправить сообщение">
+    </div>
+        <input type="hidden" name="author" id="author" value='{{user.id}}'>
+        <input type="hidden" name="opponent" id="opponent" value='{{opponent}}'>
 </div>
-    {{ room_name|json_script:"room-name" }}
+
+
+{% endblock content %}
+{% block javascript %}
+{{ room_name|json_script:"room-name" }}
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         const author_id = document.querySelector('#author').value;
@@ -130,9 +132,5 @@
             }));
             messageInputDom.value = '';
         };
-
-
-
     </script>
-
-{% endblock content %}
+{% endblock javascript %}
