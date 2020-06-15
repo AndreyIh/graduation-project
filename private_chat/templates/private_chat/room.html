@@ -79,6 +79,8 @@
 {% block javascript %}
 {{ room_name|json_script:"room-name" }}
     <script>
+        var audio = new Audio('https://noisefx.ru/noise_base/obect/bar/00458.mp3');
+
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         const author_id = document.querySelector('#author').value;
 
@@ -110,6 +112,7 @@
             div2.querySelector('dt').innerHTML = (data.author + "<span class='badge' style='background-color: #F5FFFA;;'>"+data.create_time +"</span>");
             chat_card.before(div2);
             document.getElementById('opponent_card').id = ''
+            audio.play();
             }
         };
 
