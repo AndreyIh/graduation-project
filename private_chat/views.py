@@ -16,7 +16,7 @@ from django.conf import settings
 #                      db=settings.REDIS_DB)
 
 # for heroku
-r = redis.from_url(os.environ.get("REDIS_URL"))
+# r = redis.from_url(os.environ.get("REDIS_URL"))
 
 
 @login_required(login_url='/accounts/login/')
