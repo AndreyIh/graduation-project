@@ -82,11 +82,11 @@
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         const author_id = document.querySelector('#author').value;
 
-        const ws_scheme = window.location.protocol == "http:" ? "wss" : "ws";
+        const ws_scheme = window.location.protocol == "http:" ? "ws://" : "wss://";
         //const chatSocket = new WebSocket(ws_scheme + '://' + window.location.host + "/chat" + window.location.pathname);
 
         const chatSocket = new WebSocket(
-            'wss://'
+            ws_scheme
             + window.location.host
             + '/ws/dialogs/'
             + roomName
