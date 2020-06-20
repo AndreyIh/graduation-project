@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'routes',
     'accounts',
     'blogs',
+    'taggit',
     'comments',
     'ckeditor',
 ]
