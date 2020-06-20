@@ -5,10 +5,10 @@
         <h1>E-mail Успешно отправлен!</h1>
         <p>"{{ blog.title }}" был успешно отправлен {{ form.cleaned_data.to }}.</p>
     {% else %}
-        <h1>Поделиться"{{ blog.title }}" с помощью почты</h1>
+        <h1 class="text-center">Поделиться статьей "{{ blog.title }}" с помощью email</h1>
             <form action="." method="post">{% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="Send e-mail">
+            <input type="submit" value="Отправить сообщение">
             </form>
     {% endif %}
 {% endblock %}

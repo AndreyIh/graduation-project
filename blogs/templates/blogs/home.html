@@ -6,9 +6,23 @@
 
     <div class="row">
         <div class="col-md-8 ">
+            {% if tag %}
+            <h2>Posts tagged with "{{ tag.name }}"</h2>
+            {% endif %}
             {% for obj in objects_list %}
                 <div class="card border-secondary mb-3" >
                       <h5 class="card-header">{{obj.title}}</h5>
+                        <p class=" card-header tags py-0"><small>Теги:
+                            {% if obj.tags.all %}
+                                {% for tag in obj.tags.all %}
+                                    <a href="{% url 'post_list_by_tag' tag.slug %}">
+                                        {{ tag.name }}
+                                    </a>
+                                    {% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            {%else%}
+                            -
+                            {%endif%}</small></p>
                       <div class="card-body navbar-nav-scroll my-0">
 
                             {{obj.content|safe|truncatewords_html:20|escape }}
@@ -33,6 +47,7 @@
             {% endfor %}
         </div>
         <div class="col-md-4">
+
             <div class="card border-secondary mb-3" >
               <h5 class="card-header">Наиболее обсуждаемые</h5>
                   <div class="card-body my-0">
@@ -52,14 +67,16 @@
                   <div class="card-body my-0">
 
                     <p class="card-text">
-                        <a href="{% url 'travel'  %}" class="badge badge-pill badge-success">
-                            Приложение Путешествиe <br>
+                        <a href="{% url 'travel'  %}" class="btn btn-outline-info btn-sm btn-block">
+                            Приложение Путешествиe
                             (поиск оптимального маршрута)
                         </a>
-                        <a href="{% url 'dialogs:dialogs'  %}" class="badge badge-pill badge-success">
+                        <a href="{% url 'dialogs:dialogs'  %}" class="btn btn-outline-info btn-sm btn-block">
                             Приватный чат
                         </a>
+
                     </p>
+                      <p><a href="{% url 'post_feed' %}">Подпишись на RSS рассылку</a></p>
                   </div>
             </div>
         </div>

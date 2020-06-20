@@ -17,6 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 from routes.views import (travel, find_routes, add_route,
                           RouteListView, RouteDetailView, RouteDeleteView)
+from django.contrib.sitemaps.views import sitemap
+
+from .feeds import LatestPostsFeed
+from .sitemaps import BlogSitemap
+
+sitemaps = {'blogs': BlogSitemap, }
 
 from blogs.views import home
 from .views import resume
@@ -38,4 +44,8 @@ urlpatterns = [
     path('delete/<int:pk>/', RouteDeleteView.as_view(), name='delete'),
     path('dialogs/', include(('private_chat.urls', 'dialogs'))),
     path('', home, name='home'),
+    path('tag/<slug:tag_slug>/', home, name='post_list_by_tag'),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
+         name='django.contrib.sitemaps.views.sitemap'),
+    path('feed/', LatestPostsFeed(), name='post_feed'),
 ]

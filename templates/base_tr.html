@@ -182,7 +182,9 @@
         });
         $('.table tbody tr').each(function(i) {
         var number = i + 1;
-        $(this).find('td:first').text(number+".");
+        });
+        $("#my-alert").fadeTo(5000, 500).slideUp(500, function(){
+            $("#my-alertt").slideUp(500);
         });
     </script>
 

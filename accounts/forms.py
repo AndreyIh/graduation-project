@@ -28,14 +28,18 @@ class UserLoginForm(forms.Form):
 class UserRegistrationForm(forms.ModelForm):
     username = forms.CharField(label='Никнейм', widget=forms.TextInput(
                                 attrs={'class': 'form-control'}))
+    first_name = forms.CharField(label='Как к вам обращаться?', widget=forms.TextInput(
+                                attrs={'class': 'form-control'}))
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(
                                 attrs={'class': 'form-control'}))
     password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput(
                                 attrs={'class': 'form-control'}))
+    email = forms.EmailField(label='Email', widget=forms.TextInput(
+                                attrs={'class': 'form-control'}))
 
     class Meta:
         model = User
-        fields = ('username',)
+        fields = ('username', 'first_name', 'email', 'password',)
 
     def clean_password2(self):
         data = self.cleaned_data

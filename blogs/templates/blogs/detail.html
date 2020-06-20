@@ -17,6 +17,21 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-sm-6">
+        <p class=" card-footer tags py-1"><small>Теги:
+            {% if object.tags.all %}
+                 {% for tag in object.tags.all %}
+                     <a href="{% url 'post_list_by_tag' tag.slug %}">
+                         {{ tag.name }}
+                     </a>
+                         {% if not forloop.last %}, {% endif %}
+                 {% endfor %}
+                         {%else%}
+                            -
+                         {%endif%}</small></p>
+        </div>
+    </div>
+    <div class="row">
         <div class='col'>
             <a href='{% url "home"%}'>
                 <button type='button' class='btn btn-dark'>
@@ -67,4 +82,10 @@
         </div>
     </div>
 {%endfor%}
+<hr />
+<p class="h5"> Похожие статьи:</p>
+{% for post in similar_posts%}
+    <p><a href="{% url 'comments:comment' year=post.create_time.year month=post.create_time.month day=post.create_time.day slug=post.slug %}"  title="Перейти к посту"> {{post.title}}</a></p>
+{% endfor %}
+
 {% endblock content %}

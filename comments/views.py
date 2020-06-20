@@ -2,8 +2,9 @@ from django.contrib import messages
 from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from blogs.models import Blog
+from django.db.models import Count
 
+from blogs.models import Blog
 from .models import Comment
 from .forms import CommentForm
 
@@ -33,13 +34,19 @@ def sorting_comments(comments):
 
 
 def comment_view(request, slug, year, month, day):
-
-    blog = Blog.objects.filter(slug=slug, create_time__year = year, create_time__month=month, create_time__day=day).first()
+    blog = Blog.objects.filter(slug=slug, create_time__year=year, create_time__month=month, create_time__day=day).first()
     comments = Comment.objects.filter(blog_origin=blog)
     comments = sorting_comments(comments)
     for comment in comments:
         comment.lvl = 100 - comment.lvl * 25
-    return render(request, 'blogs/detail.html', {'object': blog, 'comments': comments})
+    # Формирование списка похожих статей.
+    post_tags_ids = blog.tags.values_list('id', flat=True)
+    similar_posts = Blog.objects.filter(tags__in=post_tags_ids).exclude(id=blog.id)
+    similar_posts = similar_posts.annotate(same_tags=Count('tags')) \
+                        .order_by('-same_tags', '-create_time')[:4]
+
+    return render(request, 'blogs/detail.html', {'object': blog, 'comments': comments,
+                                                 'similar_posts': similar_posts})
 
 
 @login_required(login_url='/accounts/login/')

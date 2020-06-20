@@ -2,13 +2,15 @@ from django.contrib import messages
 from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
+
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, DeleteView, ListView
-from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
 from django.db.models import Q
+from taggit.models import Tag
 
 from .models import Blog
 from .forms import BlogForm, EmailBlogForm
@@ -26,7 +28,8 @@ class AutorRequiredMixin1(AccessMixin):
         return super().dispatch(request, *args, **kwargs)
 
 
-def home(request, author=None):
+def home(request, author=None, tag_slug=None):
+    tag = None
     if author == 'AnonymousUser' or author is None:
         blogs = Blog.objects.all()
         user_name = get_user(request).username
@@ -34,6 +37,10 @@ def home(request, author=None):
     else:
         blogs = Blog.objects.filter(author=get_user(request))
         user_name = get_user(request).username
+
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        blogs = blogs.filter(tags__in=[tag])
 
     blogs_comments = []
     # Отбираем посты с комментариями сортировка идет на главной странице
@@ -61,6 +68,9 @@ def blog_create(request):
                         author=get_user(request),
                         content=data['content'])
             blog.save()
+            tags = data['tags']
+            for tag in tags:
+                blog.tags.add(tag)
             messages.success(request, f'Блог {blog.title} был успешно сохранен')
             return redirect('/')
     else:
@@ -110,23 +120,22 @@ class SearchResultsView(ListView):
         return object_list
 
 
-
-
 def post_share(request, pk):
 
     blog = Blog.objects.filter(id=pk).first()
-    print(blog)
     if request.method == 'POST':
         form = EmailBlogForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
+            user = get_user(request)
             post_url = request.build_absolute_uri(blog.get_absolute_url())
-            subject = f"""{cd['name']} ({cd['email']}) Советует прочесть {blog.title} """
-            message = f"""Прочитай {blog.title} на {post_url}\n\n{cd['name']}\'s Комментарий: {cd['comments']}"""
-            send_mail(subject, message, 'admin@myblog.com', [cd['to']])
+            subject = f"""{user.first_name} ({user.email}) cоветует прочесть статью {blog.title} """
+            message = f"""Прочитай {blog.title} на {post_url}\n\n 
+                            Комментарий {user.first_name}: {cd['comments']}"""
+            send_mail(subject, message, 'notification.django.site@gmail.com', [cd['to']])
             sent = True
             return render(request, 'blogs/share.html',
-                          {'blog': blog, 'sent':sent})
+                          {'blog': blog, 'sent': sent})
         else:
             form = EmailBlogForm()
             return render(request, 'blogs/share.html',

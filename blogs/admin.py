@@ -3,7 +3,7 @@ from .models import Blog
 
 class BlogAdmin(admin.ModelAdmin):
 
-    list_display = ('title', 'slug', 'content', 'author', 'create_time', 'status' )
+    list_display = ('title', 'slug', 'content', 'author', 'create_time', 'status', 'tags', 'id' )
     list_editable = ['content', 'status']
     list_filter = ('status', 'create_time', 'author')
     search_fields = ('title', 'content')

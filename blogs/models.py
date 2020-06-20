@@ -3,6 +3,7 @@ from django.db import models
 from ckeditor.fields import RichTextField
 from django.urls import reverse
 from pytils.translit import slugify
+from taggit.managers import TaggableManager
 
 
 class Blog(models.Model):
@@ -16,13 +17,13 @@ class Blog(models.Model):
     updated = models.DateTimeField(auto_now=True)
     content = RichTextField(verbose_name='Пост')
     slug = models.SlugField(max_length=250, unique_for_date='create_time')
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='проект')
+    tags = TaggableManager()
 
     def __str__(self):
         return f"{self.title} автор {self.author}"
 
     def save(self, *args, **kwargs):
-        print('slug', slugify(self.title))
         self.slug = slugify(self.title)
         super(Blog, self).save(*args, **kwargs)
 

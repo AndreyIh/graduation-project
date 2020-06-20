@@ -3,6 +3,13 @@
     {% block title %} Chat Room {% endblock title %}
 
 {% block content %}
+{% load tz %}
+{% localtime on %}
+    {{ now }}
+{% endlocaltime %}
+{% get_current_timezone as TIME_ZONE %}
+<p>{{TIME_ZONE}}</p>
+
 <div class="row">
 {% for message in private_messages %}
     {% if message.author == user %}
@@ -12,7 +19,7 @@
             <div class="card-body py-0">
                 <div class="row">
                     <dd class="col-sm my-0 text-right ">{{message.messages|safe}} </dd>
-                    <dt class="col-sm-3 my-0 px-0 line text-center">Вы ({{message.author}}) <span class="badge badge-light">{{message.create_time}}</span></dt>
+                    <dt class="col-sm-3 my-0 px-0 line text-center">Вы ({{message.author}}) <span class="badge badge-light">{{message.create_time|date:"d.m.Y H:i"}}</span></dt>
                 </div>
             </div>
         </div>
@@ -22,7 +29,7 @@
         <div class="card py-0" style='background-color: #F5FFFA;'>
             <div class="card-body py-0">
                 <div class="row">
-                    <dt class="col-sm-3 my-0 px-0 text-center">{{message.author}} <span class="badge" style='background-color: #F5FFFA;'>{{message.create_time}}</span></dt>
+                    <dt class="col-sm-3 my-0 px-0 text-center">{{message.author}} <span class="badge" style='background-color: #F5FFFA;'>{{message.create_time|date:"d.m.Y H:i"}}</span></dt>
                     <dd class="col-sm my-0 line">{{message.messages|safe}}</dd>
                 </div>
             </div>

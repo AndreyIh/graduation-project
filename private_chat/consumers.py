@@ -4,6 +4,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from django.contrib.auth.models import User
 from private_chat.models import Private_Message
 from channels.db import database_sync_to_async
+from pytz import timezone
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -35,7 +36,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # save message in database, then return object
         private_message = await self.save_message(message, author, opponent)
-        message_create_time = datetime.strftime(private_message.create_time, '%d %B %Y г. %H:%M')
+        message_create_time = datetime.strftime(datetime.now(), '%d.%m.%Y %H:%M')
 
         # Send message to room group
         await self.channel_layer.group_send(
