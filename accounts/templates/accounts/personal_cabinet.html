@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %} Личный кабинет {% endblock title %}
+
+{% block content %}
+    <h2 class="display-4">Личный кабинет</h2>
+        <div class="row mx-auto">
+            <div class="col-md">
+                <table class="table table-striped table-hover table-bordered">
+        <tbody>
+                <tr>
+                    <td > Ник: </td>
+                    <td> {{user.username}} </td>
+                </tr>
+                <tr>
+                    <td > Имя, фамилия: </td>
+                    <td> {{user.first_name}}, {{user.last_name}} </td>
+                </tr>
+                <tr>
+                    <td > Почта: </td>
+                    <td> {{user.email}} </td>
+                </tr>
+                <tr>
+                    <td > Дата создания аккаунта: </td>
+                    <td>{{user.date_joined}} </td>
+                </tr>
+                <tr>
+                    <td > Дата последнего входа: </td>
+                    <td>{{user.last_login}} </td>
+                </tr>
+                <tr>
+                    <td > День рождения: </td>
+                    <td>{{profile.date_of_birth}} </td>
+                </tr>
+                <tr>
+                    <td > Фото: </td>
+                    <td><img src="{{profile.photo.url }}" alt="" width="250"> </td>
+                </tr>
+
+        </tbody>
+    </table>
+                <a href="{% url 'accounts:edit' %}" class="btn btn-warning">Редактировать профиль</a>
+                <a href="{% url 'accounts:password_change' %}" class="btn btn-warning">Изменить пароль</a>
+            </div>
+        </div>
+{% endblock content %}

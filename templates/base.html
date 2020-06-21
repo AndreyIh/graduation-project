@@ -84,6 +84,13 @@
                                     <li class="nav-item {% if request.path == add_url %}active{% endif %}">
                                       <a class="nav-link" href="{% url 'blog:add' %}">Добавить новый пост</a>
                                     </li>
+
+                                    <li class="nav-item ">
+                                        <p class="nav-link mx-0 pr-0" style="color:brown;"> Добрый день,  </p>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a class="nav-link text-left pl-1" title="Вход в личный кабинет" href="{% url 'accounts:personal_cabinet' %} " style="color:brown;">{{user.first_name}}!</a>
+                                    </li>
                                     <li class="nav-item ">
                                         <a class="nav-link" href="{% url 'accounts:logout' %} ">Выйти</a>
                                     </li>
