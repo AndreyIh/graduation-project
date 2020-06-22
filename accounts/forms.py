@@ -15,9 +15,14 @@ class UserLoginForm(forms.Form):
         password = self.cleaned_data.get('password')
 
         if username and password:
+
             qs = User.objects.filter(username=username)
+            qs_email = User.objects.filter(email=username)
+
+            qs = qs.union(qs_email)
+            print(username, qs, qs_email)
             if not qs.exists():
-                raise forms.ValidationError('Такого пользователя нет')
+                raise forms.ValidationError('Такого пользователя нет!!!')
             if not check_password(password, qs[0].password):
                 raise forms.ValidationError('Неверный пароль')
             user = authenticate(username=username, password=password)

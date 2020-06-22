@@ -34,6 +34,9 @@ def login_view(request):
         password = request.POST.get('password')
         user = authenticate(username=username.strip(),
                             password=password.strip())
+        if not user:
+            user = authenticate(email=username.strip(),
+                                password=password.strip())
         login(request, user)
         next_post = request.POST.get('next')
         rederict_path = next_ or next_post or '/'
@@ -57,10 +60,12 @@ def register_view(request):
             new_user.set_password(user_form.cleaned_data['password'])
             # Сохраняем пользователя в базе данных.
             # Создание профиля пользователя.
-            Profile.objects.create(user=new_user)
+
             new_user.save()
+            Profile.objects.create(user=new_user)
             return render(request, 'accounts/register_done.html',
                           {'new_user': new_user})
+
         else:
             if 'username' not in user_form.cleaned_data:
                 messages.error(request, "Выбeрите другой ник")
@@ -242,6 +247,9 @@ def edit_profile(request):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
+            messages.success(request, 'Профиль успешно обновлен!')
+        else:
+            messages.error(request, 'Ошибка при обновлении профиля')
     else:
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileEditForm(instance=request.user.profile)

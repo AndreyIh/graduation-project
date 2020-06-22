@@ -14,4 +14,11 @@
         </div>
 
 <p><a href="{% url "accounts:password_reset" %}" class='text-primary'>Забыли ваш пароль?</a></p>
+
+<div class="social">
+    <ul>
+        <li class="facebook"><a href="{% url "social:begin" "facebook" %}">
+        Войти с акаунта Facebook</a></li>
+    </ul>
+</div>
 {% endblock content %}
