@@ -35,20 +35,21 @@ class ChatConsumer(AsyncWebsocketConsumer):
         opponent = int(text_data_json['opponent'])
 
         # save message in database, then return object
-        private_message = await self.save_message(message, author, opponent)
-        message_create_time = datetime.strftime(datetime.now(), '%d.%m.%Y %H:%M')
+        if len(message) > 1:
+            private_message = await self.save_message(message, author, opponent)
+            message_create_time = datetime.strftime(datetime.now(), '%d.%m.%Y %H:%M')
 
-        # Send message to room group
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                'type': 'chat_message',
-                'message': message,
-                'author': private_message.author.username,
-                'author_id': private_message.author.id,
-                'create_time': message_create_time
-            }
-        )
+            # Send message to room group
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'chat_message',
+                    'message': message,
+                    'author': private_message.author.first_name,
+                    'author_id': private_message.author.id,
+                    'create_time': message_create_time
+                }
+            )
 
     # Receive message from room group
     async def chat_message(self, event):
@@ -68,8 +69,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def save_message(self, message, author, opponent):
-        author = User.objects.filter(id=author)[0]
-        opponent = User.objects.filter(id=opponent)[0]
+        print(len(message))
+        author = User.objects.filter(id=author).first()
+        opponent = User.objects.filter(id=opponent).first()
         privat_message = Private_Message(messages=message, author=author)
         privat_message.save()
         privat_message.interlocutors.add(author)

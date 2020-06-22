@@ -52,4 +52,4 @@ urlpatterns = [
          name='django.contrib.sitemaps.views.sitemap'),
     path('feed/', LatestPostsFeed(), name='post_feed'),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
