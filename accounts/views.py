@@ -115,7 +115,7 @@ class MyPasswordResetDoneView(PasswordContextMixin, TemplateView):
 @login_required(login_url='/accounts/login/')
 def personal_cabinet(request):
     user = get_user(request)
-    account = Profile.objects.filter(id=user.id).first()
+    account = Profile.objects.filter(user_id=user.id)[0]
     return render(request, 'accounts/personal_cabinet.html', {'user': user, 'profile': account})
 
 
