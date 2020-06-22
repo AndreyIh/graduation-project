@@ -28,7 +28,7 @@ from .sitemaps import BlogSitemap
 sitemaps = {'blogs': BlogSitemap, }
 
 from blogs.views import home
-from .views import resume
+from .views import resume, google_view
 
 urlpatterns = [
     path('accounts/', include(('accounts.urls', 'accounts'))),
@@ -52,4 +52,5 @@ urlpatterns = [
          name='django.contrib.sitemaps.views.sitemap'),
     path('feed/', LatestPostsFeed(), name='post_feed'),
     path('social-auth/', include('social_django.urls', namespace='social')),
+    path('google78ac6ff1be765c70.html', google_view)
 ]
