@@ -137,7 +137,7 @@ def add_route(request):
             to_city = data['to_city']
             train_list = data['trains'].replace('  ', ' ').strip()
             qs = Train.objects.filter(id__in=train_list.split())
-            route = Route(name = name, from_city=from_city,
+            route = Route(name=name, from_city=from_city,
                           to_city=to_city, travel_times=travel_times)
             route.save()
             for tr in qs:

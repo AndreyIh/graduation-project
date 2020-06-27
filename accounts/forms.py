@@ -20,7 +20,6 @@ class UserLoginForm(forms.Form):
             qs_email = User.objects.filter(email=username)
 
             qs = qs.union(qs_email)
-            print(username, qs, qs_email)
             if not qs.exists():
                 raise forms.ValidationError('Такого пользователя нет!!!')
             if not check_password(password, qs[0].password):
